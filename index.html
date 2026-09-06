@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Timetable</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
+            --border-color: #e5e7eb;
+            --primary: #3b82f6;
+            --break-bg: #f3f4f6;
+            --accent-glow: rgba(59, 130, 246, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        header p {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 900px; /* Ensures side scroll in portrait mode */
+            table-layout: fixed;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            vertical-align: top;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-sub);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Sticky Day Column */
+        th:first-child, td:first-child {
+            position: sticky;
+            left: 0;
+            background-color: #f8fafc;
+            z-index: 11;
+            width: 80px;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: 700;
+        }
+
+        th:first-child {
+            z-index: 12;
+        }
+
+        .time-header {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-sub);
+            font-weight: normal;
+            margin-top: 2px;
+        }
+
+        .cell-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            height: 100%;
+            min-height: 85px;
+        }
+
+        .subject {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .code {
+            font-size: 0.72rem;
+            color: var(--text-sub);
+        }
+
+        .teacher {
+            font-size: 0.72rem;
+            color: var(--text-main);
+            margin-top: auto;
+        }
+
+        .room {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #d97706;
+        }
+
+        .break-cell {
+            background-color: var(--break-bg);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .break-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-sub);
+        }
+
+        /* Landscape orientation optimizations */
+        @media screen and (min-width: 768px) and (orientation: landscape) {
+            body {
+                padding: 20px;
+            }
+            
+            table {
+                min-width: 100%;
+            }
+
+            .cell-content {
+                min-height: 95px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Ayushman (Y12G)</h1>
+        <p>31/08/2026 - 05/09/2026</p>
+    </header>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Form<span class="time-header">07:40</span></th>
+                    <th>Reading<span class="time-header">07:55</span></th>
+                    <th>Period 1<span class="time-header">08:10</span></th>
+                    <th>Period 2<span class="time-header">09:00</span></th>
+                    <th>Break<span class="time-header">09:50</span></th>
+                    <th>Period 3<span class="time-header">10:55</span></th>
+                    <th>Period 4<span class="time-header">11:45</span></th>
+                    <th>Lunch<span class="time-header">12:35</span></th>
+                    <th>Period 5<span class="time-header">13:15</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mon<br><span style="font-weight: normal; font-size: 0.75rem; color: var(--text-sub);">W1</span></td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Form</span>
+                            <span class="code">Y12G/Re</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Reading</span>
+                            <span class="code">Y12G/Rd</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Enrichment / Assembly</span>
+                            <span class="code">Y12G/Ep</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Chemistry</span>
+                            <span class="code">Y12CH2/Ch</span>
+                            <span class="teacher">Celine, Arab</span>
+                            <span class="room">A319</span>
+                        </div>
+                    </td>
+                    <td class="break-cell">
+                        <span class="break-title">Break</span><br>
+                        <span class="code">Y12B1/Bk1</span>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Maths</span>
+                            <span class="code">Y12MA2/Ma</span>
+                            <span class="teacher">Nikita, Francis</span>
+                            <span class="room">A150</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Maths</span>
+                            <span class="code">Y12MA2/Ma</span>
+                            <span class="teacher">Ms Akther</span>
+                            <span class="room">A145</span>
+                        </div>
+                    </td>
+                    <td class="break-cell">
+                        <span class="break-title">Lunch</span><br>
+                        <span class="code">Y12B2/Lu1</span>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Physics</span>
+                            <span class="code">Y12PH3/Ph</span>
+                            <span class="teacher">Ms Khan</span>
+                            <span class="room">B301</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Tue<br><span style="font-weight: normal; font-size: 0.75rem; color: var(--text-sub);">W1</span></td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Form</span>
+                            <span class="code">Y12G/Re</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Reading</span>
+                            <span class="code">Y12G/Rd</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Physics</span>
+                            <span class="code">Y12PH3/Ph</span>
+                            <span class="teacher">Ms Khan</span>
+                            <span class="room">B301</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Maths</span>
+                            <span class="code">Y12MA2/Ma</span>
+                            <span class="teacher">Nikita, Francis</span>
+                            <span class="room">A150</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Chemistry</span>
+                            <span class="code">Y12CH2/Ch</span>
+                            <span class="teacher">Minhajuddin, Muhammed</span>
+                            <span class="room">A304</span>
+                        </div>
+                    </td>
+                    <td class="break-cell">
+                        <span class="break-title">Break</span><br>
+                        <span class="code">Y12B1/Bk1</span>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Physics</span>
+                            <span class="code">Y12PH3/Ph</span>
+                            <span class="teacher">Ms Khan</span>
+                            <span class="room">B301</span>
+                        </div>
+                    </td>
+                    <td class="break-cell">
+                        <span class="break-title">Lunch</span><br>
+                        <span class="code">Y12B2/Lu1</span>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Maths</span>
+                            <span class="code">Y12MA2/Ma</span>
+                            <span class="teacher">Ms Akther</span>
+                            <span class="room">A145</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Wed<br><span style="font-weight: normal; font-size: 0.75rem; color: var(--text-sub);">W1</span></td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Form</span>
+                            <span class="code">Y12G/Re</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Reading</span>
+                            <span class="code">Y12G/Rd</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Chemistry</span>
+                            <span class="code">Y12CH2/Ch</span>
+                            <span class="teacher">Minhajuddin, Muhammed</span>
+                            <span class="room">A304</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Maths</span>
+                            <span class="code">Y12MA2/Ma</span>
+                            <span class="teacher">Nikita, Francis</span>
+                            <span class="room">A150</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Physics</span>
+                            <span class="code">Y12PH3/Ph</span>
+                            <span class="teacher">Ms Khan</span>
+                            <span class="room">B301</span>
+                        </div>
+                    </td>
+                    <td class="break-cell">
+                        <span class="break-title">Break</span><br>
+                        <span class="code">Y12B1/Bk1</span>
+                    </td>
+                    <td>--</td>
+                    <td class="break-cell">
+                        <span class="break-title">Lunch</span><br>
+                        <span class="code">Y12B2/Lu1</span>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Chemistry</span>
+                            <span class="code">Y12CH2/Ch</span>
+                            <span class="teacher">Celine, Arab</span>
+                            <span class="room">A319</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Thu<br><span style="font-weight: normal; font-size: 0.75rem; color: var(--text-sub);">W1</span></td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Form</span>
+                            <span class="code">Y12G/Re</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Reading</span>
+                            <span class="code">Y12G/Rd</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Physics</span>
+                            <span class="code">Y12PH3/Ph</span>
+                            <span class="teacher">Ms Khan</span>
+                            <span class="room">B301</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Physics</span>
+                            <span class="code">Y12PH3/Ph</span>
+                            <span class="teacher">Ms Khan</span>
+                            <span class="room">B301</span>
+                        </div>
+                    </td>
+                    <td>--</td>
+                    <td class="break-cell">
+                        <span class="break-title">Break</span><br>
+                        <span class="code">Y12B1/Bk1</span>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Chemistry</span>
+                            <span class="code">Y12CH2/Ch</span>
+                            <span class="teacher">Minhajuddin, Muhammed</span>
+                            <span class="room">A304</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Chemistry</span>
+                            <span class="code">Y12CH2/Ch</span>
+                            <span class="teacher">Celine, Arab</span>
+                            <span class="room">A319</span>
+                        </div>
+                    </td>
+                    <td class="break-cell">
+                        <span class="break-title">Lunch</span><br>
+                        <span class="code">Y12B2/Lu1</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Fri<br><span style="font-weight: normal; font-size: 0.75rem; color: var(--text-sub);">W1</span></td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Form</span>
+                            <span class="code">Y12G/Re</span>
+                            <span class="teacher">Christy, Shiny</span>
+                            <span class="room">B325</span>
+                        </div>
+                    </td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td class="break-cell">
+                        <span class="break-title">Break</span><br>
+                        <span class="code">Y12B1/Bk1</span>
+                    </td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="subject">Maths</span>
+                            <span class="code">Y12MA2/Ma</span>
+                            <span class="teacher">Ms Akther</span>
+                            <span class="room">A145</span>
+                        </div>
+                    </td>
+                    <td>--</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
