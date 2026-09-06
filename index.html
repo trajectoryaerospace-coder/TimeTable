@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Timetable</title>
+    <title>School Timetable - Ayushman (Y12G)</title>
     <style>
         :root {
             --bg-color: #f4f6f9;
@@ -11,9 +11,11 @@
             --text-main: #1f2937;
             --text-sub: #6b7280;
             --border-color: #e5e7eb;
-            --primary: #3b82f6;
-            --break-bg: #f3f4f6;
-            --accent-glow: rgba(59, 130, 246, 0.08);
+            --primary: #2563eb;
+            --free-bg: #f8fafc;
+            --free-text: #64748b;
+            --break-bg: #f1f5f9;
+            --room-color: #d97706;
         }
 
         * {
@@ -38,6 +40,7 @@
             border-radius: 12px;
             margin-bottom: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
         }
 
         header h1 {
@@ -66,7 +69,7 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            min-width: 900px; /* Ensures side scroll in portrait mode */
+            min-width: 1050px; /* Expands horizontal scroll on narrow mobile screens */
             table-layout: fixed;
         }
 
@@ -90,13 +93,13 @@
             z-index: 10;
         }
 
-        /* Sticky Day Column */
+        /* Sticky First Column for Days */
         th:first-child, td:first-child {
             position: sticky;
             left: 0;
             background-color: #f8fafc;
             z-index: 11;
-            width: 80px;
+            width: 75px;
             text-align: center;
             vertical-align: middle;
             font-weight: 700;
@@ -142,7 +145,7 @@
         .room {
             font-size: 0.72rem;
             font-weight: 600;
-            color: #d97706;
+            color: var(--room-color);
         }
 
         .break-cell {
@@ -157,12 +160,26 @@
             color: var(--text-sub);
         }
 
-        /* Landscape orientation optimizations */
+        .free-cell {
+            background-color: var(--free-bg);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .free-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--free-text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive view optimization for desktop/landscape tablet */
         @media screen and (min-width: 768px) and (orientation: landscape) {
             body {
                 padding: 20px;
             }
-            
+
             table {
                 min-width: 100%;
             }
@@ -189,11 +206,12 @@
                     <th>Reading<span class="time-header">07:55</span></th>
                     <th>Period 1<span class="time-header">08:10</span></th>
                     <th>Period 2<span class="time-header">09:00</span></th>
-                    <th>Break<span class="time-header">09:50</span></th>
-                    <th>Period 3<span class="time-header">10:55</span></th>
-                    <th>Period 4<span class="time-header">11:45</span></th>
+                    <th>Period 3<span class="time-header">09:50</span></th>
+                    <th>Break<span class="time-header">10:40</span></th>
+                    <th>Period 4<span class="time-header">10:55</span></th>
+                    <th>Period 5<span class="time-header">11:45</span></th>
                     <th>Lunch<span class="time-header">12:35</span></th>
-                    <th>Period 5<span class="time-header">13:15</span></th>
+                    <th>Period 6<span class="time-header">13:15</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -230,6 +248,9 @@
                             <span class="teacher">Celine, Arab</span>
                             <span class="room">A319</span>
                         </div>
+                    </td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
                     </td>
                     <td class="break-cell">
                         <span class="break-title">Break</span><br>
@@ -311,6 +332,9 @@
                         <span class="break-title">Break</span><br>
                         <span class="code">Y12B1/Bk1</span>
                     </td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
                     <td>
                         <div class="cell-content">
                             <span class="subject">Physics</span>
@@ -379,7 +403,12 @@
                         <span class="break-title">Break</span><br>
                         <span class="code">Y12B1/Bk1</span>
                     </td>
-                    <td>--</td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
                     <td class="break-cell">
                         <span class="break-title">Lunch</span><br>
                         <span class="code">Y12B2/Lu1</span>
@@ -428,7 +457,9 @@
                             <span class="room">B301</span>
                         </div>
                     </td>
-                    <td>--</td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
                     <td class="break-cell">
                         <span class="break-title">Break</span><br>
                         <span class="code">Y12B1/Bk1</span>
@@ -453,6 +484,9 @@
                         <span class="break-title">Lunch</span><br>
                         <span class="code">Y12B2/Lu1</span>
                     </td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
                 </tr>
 
                 <tr>
@@ -465,15 +499,32 @@
                             <span class="room">B325</span>
                         </div>
                     </td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
                     <td class="break-cell">
                         <span class="break-title">Break</span><br>
                         <span class="code">Y12B1/Bk1</span>
                     </td>
-                    <td>--</td>
-                    <td>--</td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
+                    <td class="free-cell">
+                        <span class="free-title">Free Period</span>
+                    </td>
+                    <td class="break-cell">
+                        <span class="break-title">Lunch</span><br>
+                        <span class="code">Y12B2/Lu1</span>
+                    </td>
                     <td>
                         <div class="cell-content">
                             <span class="subject">Maths</span>
@@ -482,7 +533,6 @@
                             <span class="room">A145</span>
                         </div>
                     </td>
-                    <td>--</td>
                 </tr>
             </tbody>
         </table>
